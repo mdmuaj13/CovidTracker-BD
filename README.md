@@ -4,6 +4,8 @@
 + Flutter framework used to integrate.
 + The virus tracker & covid19api used for API
 + Image, vector taken from freepik.com
++++
++ Ready Apk [Download](https://github.com/mdmuaj13/CovidTracker-BD/blob/master/Demo/CovidTracker-BD.apk)
 
 ### ScreenShot
 + ![Home Page](https://github.com/mdmuaj13/CovidTracker-BD/blob/master/Demo/1.png "Home")
