@@ -11,6 +11,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Covid-19',
       theme: ThemeData( 
+        // textTheme: TextTheme(body1: TextStyle(fontFamily: "Poppins")),
+        // fontFamily: "Poppins",
         primarySwatch: Colors.blue,
       ), 
       initialRoute: '/',

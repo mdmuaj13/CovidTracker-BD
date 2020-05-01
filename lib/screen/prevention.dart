@@ -1,7 +1,6 @@
- 
 import 'package:flutter/material.dart';
 
-class Symptomps extends StatelessWidget {
+class Prevention extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -52,7 +51,7 @@ class Symptomps extends StatelessWidget {
                                 },
                               ),
                               Text(
-                                'Symptom',
+                                'Prevention',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 ),
@@ -97,9 +96,12 @@ class Symptomps extends StatelessWidget {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
-                              symptompDetail("Fever", "fever"),
-                              symptompDetail("Caugh", "caugh"),
-                              symptompDetail("Headache", "headache"),
+                              symptompDetail("Wash Hand Frequently", "prev5"),
+                              symptompDetail("Do not sneeze in the palm ", "prev1"),
+                              symptompDetail("Sneeze into your forearm", "prev2"),
+                              symptompDetail("Do not touch your face", "prev3"),
+                              symptompDetail("Wear Mask", "prev4"),
+                              symptompDetail("Stay Home", "prev6"),
                             ],
                           ),
                         ),
@@ -107,10 +109,11 @@ class Symptomps extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(14.0),
                             child: Text(
-                              " It seems to start with a fever, followed by a dry cough. \n \n" +
-                                  "After a week, it can lead to shortness of breath, with about 20% of patients requiring hospital treatment. \n\n" +
-                                  "Notably, the COVID-19 infection rarely seems to cause a runny nose, sneezing," +
-                                  "or sore throat (these symptoms have been observed in only about 5% of patients). Sore throat, sneezing, and stuffy nose are most often signs of a cold.",
+                                  "Wash hand with soap or sanitasor frequently. \n \n" +
+                                  "Wear Mask and gloves. \n\n" +
+                                  "Keep 1 meter distance with other person \n\n" +
+                                  "Do not sneeze in the palm of your hand. Sneeze into your forearm or elbow\n\n" +
+                                  "Do not touch your face with hand \n",
                               style: TextStyle(fontSize: 16.0),
                             ),
                           ),

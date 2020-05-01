@@ -1,7 +1,7 @@
- 
+import 'package:covid/constants.dart';
 import 'package:flutter/material.dart';
 
-class Symptomps extends StatelessWidget {
+class AboutInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,7 +25,7 @@ class Symptomps extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 150.0,
+                    height: 100.0,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       color: Colors.red,
@@ -52,7 +52,7 @@ class Symptomps extends StatelessWidget {
                                 },
                               ),
                               Text(
-                                'Symptom',
+                                'About',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 ),
@@ -63,25 +63,14 @@ class Symptomps extends StatelessWidget {
                         ),
                         Expanded(
                           child: Stack(
-                            children: <Widget>[
-                              Container(),
-                              Positioned(
-                                child: Center(
-                                  child: Image.asset(
-                                    "assets/images/3feet.png",
-                                    width: 250.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            children: <Widget>[],
                           ),
                         )
                       ],
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height - 150.0,
+                    height: MediaQuery.of(context).size.height - 118.0,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -90,32 +79,45 @@ class Symptomps extends StatelessWidget {
                         topRight: Radius.circular(20.0),
                       ),
                     ),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 150.0,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Center(child: Text('Application')),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text('This is application is basic covid-19 tracker for Bangladesh region. \n\n' +
+                              'Data collected from Johns Hopkin University. Bengali localization about to integrate.\n'),
+                          Divider(
+                            height: 20.0,
+                          ),
+                          Center(child: Text('Developer')),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            "Md. Mohaiminul Hasan",
+                            style: cPositiveReportData.copyWith(
+                                color: cGrandientColor1),
+                          ),
+                          Text("Web Developer & Flutter Developer",
+                              style: TextStyle(
+                                  fontSize: 16.0, color: cGrandientColor2)),
+                          Row(
                             children: <Widget>[
-                              symptompDetail("Fever", "fever"),
-                              symptompDetail("Caugh", "caugh"),
-                              symptompDetail("Headache", "headache"),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 4,
+                              ),
+                              Icon(Icons.mail_outline),
+                              Text(
+                                'iammuaj@gmail.com',
+                                style: TextStyle(color: cGrandientColor1),
+                              ),
                             ],
                           ),
-                        ),
-                        Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(14.0),
-                            child: Text(
-                              " It seems to start with a fever, followed by a dry cough. \n \n" +
-                                  "After a week, it can lead to shortness of breath, with about 20% of patients requiring hospital treatment. \n\n" +
-                                  "Notably, the COVID-19 infection rarely seems to cause a runny nose, sneezing," +
-                                  "or sore throat (these symptoms have been observed in only about 5% of patients). Sore throat, sneezing, and stuffy nose are most often signs of a cold.",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -126,33 +128,4 @@ class Symptomps extends StatelessWidget {
       ],
     );
   }
-}
-
-Container symptompDetail(String title, String image) {
-  return Container(
-    padding: EdgeInsets.all(5.0),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
-      color: Colors.transparent,
-      boxShadow: [
-        BoxShadow(
-          offset: Offset(0, 10),
-          blurRadius: 10.0,
-          color: Colors.grey[200],
-        ),
-      ],
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(14.0),
-      child: Column(
-        children: <Widget>[
-          Image.asset("assets/images/$image.png"),
-          SizedBox(
-            height: 10.0,
-          ),
-          Text("$title"),
-        ],
-      ),
-    ),
-  );
 }

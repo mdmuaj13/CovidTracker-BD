@@ -10,10 +10,7 @@ class HttpService {
         Response response = await  get(url);
 
     if (response.statusCode == 200) { 
-
-      var data = coronaFromJson(response.body.toString());
  
-        print("Deaths: "+data[data.length -1].deaths.toString());
 
       return coronaFromJson(response.body.toString());
     } else {
@@ -51,8 +48,9 @@ class HttpService {
         if(response.statusCode == 200){
           Covid data = covidFromJson(response.body.toString());
           Countrydatum virusData = data.countrydata[0];
-          print(virusData.totalDeaths.toString());
-          print(virusData.totalActiveCases.toString());
+
+          // print(virusData.totalDeaths.toString());
+          // print(virusData.totalActiveCases.toString());
 
           return virusData;
 

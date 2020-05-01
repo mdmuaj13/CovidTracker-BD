@@ -1,10 +1,11 @@
 import 'package:covid/constants.dart';
 import 'package:covid/data/http_service.dart';
 import 'package:covid/model/corona.dart';
+import 'package:covid/model/covid.dart';
 import 'package:covid/screen/record.dart';
 import 'package:covid/widget/myheader.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:covid/widget/symptom_card.dart';
+import 'package:flutter/material.dart'; 
 
 class MainHome extends StatefulWidget {
   @override
@@ -14,7 +15,9 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   final HttpService httpService = HttpService();
 
-  var _dropdownValue = "Bangladesh";
+  // var _dropdownValue = "Bangladesh";
+  DateTime currentBackPressTime;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,68 +31,8 @@ class _MainHomeState extends State<MainHome> {
                 topText: "Stay Home",
                 bottomText: "Stay Safe",
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30.0),
-                height: 40.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25.0),
-                  border: Border.all(
-                    color: Colors.black26,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.0),
-                          color: Colors.deepPurple[100],
-                        ),
-                        child: SvgPicture.asset(
-                          "assets/icons/maps-and-flags.svg",
-                          color: Colors.deepPurple,
-                          height: 20,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      Expanded(
-                        child: DropdownButton(
-                          value: _dropdownValue,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: cPrimaryColor,
-                          ),
-                          isExpanded: true,
-                          underline: SizedBox(),
-                          icon: SvgPicture.asset(
-                            "assets/icons/dropdown.svg",
-                            height: 10,
-                            color: Colors.deepPurple[200],
-                          ),
-                          items: ['Bangladesh', 'World']
-                              .map<DropdownMenuItem<String>>((String newvalue) {
-                            return DropdownMenuItem<String>(
-                              value: newvalue,
-                              child: Text(newvalue),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _dropdownValue = value;
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              // dropdownMenu(),
+
               Padding(
                 padding: EdgeInsets.all(18.0),
                 child: Align(
@@ -105,31 +48,27 @@ class _MainHomeState extends State<MainHome> {
                             style: cBlockTitleText,
                           ),
                           Text(
-                            "Last update 2 hours ago",
+                            "Data source from Johns Hopkins CSSE",
                             style: cBlockDetailText,
                             textAlign: TextAlign.left,
                           ),
                         ],
                       ),
                       Spacer(),
-                      OutlineButton(
-                        padding: EdgeInsets.all(0.0),
-                        child: MaterialButton(
-                          child: Text("See Details"),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Records()));
-                          },
-                        ),
+                      FlatButton(
+                        child: Text("See Details"),
                         color: Colors.white,
                         textColor: cDetailColor,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
+                          borderRadius: BorderRadius.circular(20.0),
                           side: BorderSide(color: cDetailColor),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Records()));
+                        },
                       ),
                     ],
                   ),
@@ -151,12 +90,11 @@ class _MainHomeState extends State<MainHome> {
                           )
                         ]),
                     child: FutureBuilder(
-                      future: httpService.getCoronaData(),
+                      future: httpService.getCovidData(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<List<Corona>> snapshot) {
+                          AsyncSnapshot<Countrydatum> snapshot) {
                         if (snapshot.hasData) {
-                          List<Corona> data = snapshot.data;
-                          Corona lastData = data[data.length - 1];
+                          Countrydatum c = snapshot.data;
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
@@ -184,7 +122,7 @@ class _MainHomeState extends State<MainHome> {
                                         height: 5.0,
                                       ),
                                       Text(
-                                        lastData.recovered.toString(),
+                                        c.totalRecovered.toString(),
                                         style: cPositiveReportData,
                                       ),
                                       SizedBox(
@@ -222,7 +160,7 @@ class _MainHomeState extends State<MainHome> {
                                         height: 5.0,
                                       ),
                                       Text(
-                                        lastData.active.toString(),
+                                        c.totalActiveCases.toString(),
                                         style: cWarningReportData,
                                       ),
                                       SizedBox(
@@ -260,7 +198,7 @@ class _MainHomeState extends State<MainHome> {
                                         height: 5.0,
                                       ),
                                       Text(
-                                        lastData.deaths.toString(),
+                                        c.totalDeaths.toString(),
                                         style: cDangerReportData,
                                       ),
                                       SizedBox(
@@ -284,9 +222,14 @@ class _MainHomeState extends State<MainHome> {
                   ),
                 ),
               ),
-              Text(
-                "Last 24 hours (new cases)",
-                style: cBlockTitleText,
+              Container(
+                padding: EdgeInsets.only(left: 18.0),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Last 24 hours",
+                  style: cBlockTitleText,
+                  textAlign: TextAlign.start,
+                ),
               ),
               SizedBox(
                 height: 200.0,
@@ -464,7 +407,9 @@ class _MainHomeState extends State<MainHome> {
                               borderRadius: BorderRadius.circular(20.0),
                               side: BorderSide(color: cDetailColor),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'symtomps');
+                            },
                           ),
                         ],
                       ),
@@ -485,7 +430,81 @@ class _MainHomeState extends State<MainHome> {
                           title: "Headache",
                         ),
                       ],
-                    )
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(18.0),
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "Prevention",
+                            style: cBlockTitleText,
+                          ),
+                          Spacer(),
+                          FlatButton(
+                            child: Text("See Details"),
+                            color: Colors.white,
+                            textColor: cDetailColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: cDetailColor),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'prevention');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 120.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          SymptomCard(
+                            image: "assets/images/prev5.png",
+                            title: "Wash hand",
+                          ),
+                          SizedBox(
+                            width: 25.0,
+                          ),
+                          SymptomCard(
+                            image: "assets/images/prev4.png",
+                            title: "Wear Mask",
+                          ),
+                          SizedBox(
+                            width: 25.0,
+                          ),
+                          SymptomCard(
+                            image: "assets/images/prev1.png",
+                            title: "Don't sneeze in palm of hand",
+                          ),
+                          SizedBox(
+                            width: 25.0,
+                          ),
+                          SymptomCard(
+                            image: "assets/images/prev2.png",
+                            title: "Sneeze into forearm",
+                          ),
+                          SizedBox(
+                            width: 25.0,
+                          ),
+                          SymptomCard(
+                            image: "assets/images/prev6.png",
+                            title: "Stay Home",
+                          ),
+                          SizedBox(
+                            width: 25.0,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -494,40 +513,76 @@ class _MainHomeState extends State<MainHome> {
         ),
       ),
     );
-  }
+
+
+
+  // Container dropdownMenu() {
+  //   return Container(
+  //     margin: EdgeInsets.symmetric(horizontal: 30.0),
+  //     height: 40.0,
+  //     width: double.infinity,
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(25.0),
+  //       border: Border.all(
+  //         color: Colors.black26,
+  //       ),
+  //     ),
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(8.0),
+  //       child: Row(
+  //         children: <Widget>[
+  //           Container(
+  //             padding: EdgeInsets.all(4.0),
+  //             decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(25.0),
+  //               color: Colors.deepPurple[100],
+  //             ),
+  //             child: SvgPicture.asset(
+  //               "assets/icons/maps-and-flags.svg",
+  //               color: Colors.deepPurple,
+  //               height: 20,
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             width: 10.0,
+  //           ),
+  //           Expanded(
+  //             child: DropdownButton(
+  //               value: _dropdownValue,
+  //               style: TextStyle(
+  //                 fontSize: 18.0,
+  //                 color: cPrimaryColor,
+  //               ),
+  //               isExpanded: true,
+  //               underline: SizedBox(),
+  //               icon: SvgPicture.asset(
+  //                 "assets/icons/dropdown.svg",
+  //                 height: 10,
+  //                 color: Colors.deepPurple[200],
+  //               ),
+  //               items: ['Bangladesh', 'World']
+  //                   .map<DropdownMenuItem<String>>((String newvalue) {
+  //                 return DropdownMenuItem<String>(
+  //                   value: newvalue,
+  //                   child: Text(newvalue),
+  //                 );
+  //               }).toList(),
+  //               onChanged: (value) {
+  //                 setState(() {
+  //                   _dropdownValue = value;
+  //                 });
+  //               },
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
 }
 
-class SymptomCard extends StatelessWidget {
-  final String image;
-  final String title;
 
-  const SymptomCard({
-    Key key,
-    this.image,
-    this.title,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: Colors.transparent,
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 10),
-            blurRadius: 10.0,
-            color: Colors.grey[300],
-          ),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          Image.asset("$image"),
-          Text("$title"),
-        ],
-      ),
-    );
   }
-}
+
