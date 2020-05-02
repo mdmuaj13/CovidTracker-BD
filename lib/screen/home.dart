@@ -49,7 +49,7 @@ class _MainHomeState extends State<MainHome> {
                           ),
                           Text(
                             "Data source from Johns Hopkins CSSE",
-                            style: cBlockDetailText,
+                            style: cBlockDetailText.copyWith(fontSize: 12.0),
                             textAlign: TextAlign.left,
                           ),
                         ],
@@ -223,12 +223,22 @@ class _MainHomeState extends State<MainHome> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 18.0),
+                padding: EdgeInsets.only(left: 18.0,right: 18.0),
                 alignment: Alignment.topLeft,
-                child: Text(
-                  "Last 24 hours",
-                  style: cBlockTitleText,
-                  textAlign: TextAlign.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Last 24 hours",
+                      style: cBlockTitleText,
+                      textAlign: TextAlign.start,
+                    ), 
+                    Text(
+                       httpService.getLastDate() ,
+                      style: cBlockTitleText.copyWith(fontSize: 12.0,color: Colors.grey),
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
                 ),
               ),
               SizedBox(

@@ -280,7 +280,7 @@ class _RecordsState extends State<Records> {
           return Expanded(
             child: ListView.builder(
                 reverse: true,
-                itemCount: data.length,
+                itemCount: data.length - 1,
                 itemBuilder: (context, index) {
                   var date = DateTime.parse(data[index].date.toIso8601String());
                   print(date.toString() + data[index].deaths.toString());
@@ -293,10 +293,7 @@ class _RecordsState extends State<Records> {
                       color: cPositiveVLight,
                       borderRadius: BorderRadius.circular(15.0),
                       boxShadow: [
-                        BoxShadow(
-                          offset: Offset(2, 0),
-                          color: Colors.grey
-                        )
+                        BoxShadow(offset: Offset(2, 0), color: Colors.grey)
                       ],
                     ),
                     child: Center(
@@ -307,34 +304,27 @@ class _RecordsState extends State<Records> {
                             children: <Widget>[
                               Text(
                                 DateFormat.d()
-                                    .format(data[index]
-                                        .date
-                                        // .subtract(Duration(days: 1))
-                                        )
+                                    .format(data[index].date)
                                     .toString(),
                                 style: cPositiveReportData,
                               ),
-                              Text(
-                                DateFormat.MMMM()
-                                        .format(data[index].date)
-                                        .toString() +
-                                    ", " +
-                                    DateFormat.y()
-                                        .format(data[index].date)
-                                        .toString(),
-                              ),
+                              Text(DateFormat.MMMM()
+                                      .format(data[index].date)
+                                      .toString() +
+                                  ", " +
+                                  DateFormat.y()
+                                      .format(data[index].date)
+                                      .toString()),
                             ],
                           ),
-                          Text(data[index].active.toString(),
+                          Text(data[index].confirmed.toString(),
                               style: cWarningReportData),
                           Text(
                             data[index].recovered.toString(),
                             style: cPositiveReportData,
                           ),
-                          Text(
-                            data[index].deaths.toString(),
-                            style: cDangerReportData,
-                          ),
+                          Text(data[index].deaths.toString(),
+                              style: cDangerReportData),
                         ],
                       ),
                     ),
